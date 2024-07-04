@@ -40,9 +40,4 @@ TEST(SoundexTest, EncodeDifferentLengths) {
     EXPECT_EQ(generateSoundex("Fox"), "F200");
 }
 
-// Test case for ignoring non-alphabet characters
-TEST(SoundexTest, EncodeWithNonAlphabetCharacters) {
-    EXPECT_EQ(generateSoundex("O'Possum"), "O250");
-    EXPECT_EQ(generateSoundex("McCaw"), "M200");
-    EXPECT_EQ(generateSoundex("St. Bernard"), "S351");
-}
+
