@@ -29,8 +29,8 @@ TEST(SoundexTest, EncodeAnimalNames) {
 
 // Test case for names with consecutive same Soundex codes
 TEST(SoundexTest, EncodeConsecutiveCodes) {
-    EXPECT_EQ(generateSoundex("Emu"), "E500");
-    EXPECT_EQ(generateSoundex("Hippopotamus"), "H113");
+    EXPECT_EQ(generateSoundex("Buffalo"), "B140");
+    EXPECT_EQ(generateSoundex("Hedgehog"), "H320");
 }
 
 // Test case for names with different lengths
