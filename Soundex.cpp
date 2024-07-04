@@ -2,53 +2,64 @@
 #include <string>
 #include <cctype>
 #include <unordered_map>
-
-char encodeChar(char c) {
-    static const char codes[] = {
+ 
+char getSoundexCode(char c) {
+    static const char soundexCodes[] = {
         '0', '1', '2', '3', '0', '1', '2', '0', '0', '2', '2', '4', '5', '5', '0', '1', '2', '6', '2', '3', '0', '1', '0', '2', '0', '2'
     };
-
-    c = std::toupper(static_cast<unsigned char>(c));
+ 
+    c = toupper(c);
     if (c >= 'A' && c <= 'Z') {
-        return codes[c - 'A'];
+        return soundexCodes[c - 'A'];
     }
     return '0';
 }
-
-char getFirstChar(const std::string& name) {
+ 
+char fetch_firstchar(const std::string& name) {
     if (name.empty()) return '\0';
-    return std::toupper(static_cast<unsigned char>(name[0]));
+    return toupper(name[0]);
 }
-
-void addCode(std::string& soundex, char code, char& prevCode) {
+ 
+void appendSoundex(std::string& soundex, char code, char& prevCode) {
     if (code != '0' && code != prevCode) {
         soundex += code;
         prevCode = code;
     }
 }
-
-std::string initSoundex(const std::string& name, char firstChar) {
+ 
+std::string initializeSoundex(const std::string& name, char firstChar) {
     std::string soundex(1, firstChar);
-    char firstCode = encodeChar(name[1]);
-    if (firstCode != '0') {
-        soundex += firstCode;
+    char secondex = getSoundexCode(name[1]);
+    if (secondex != '0') {
+        soundex += secondex;
     }
     return soundex;
 }
-
-std::string generateSoundex(const std::string& name, char firstChar) {
-    std::string soundex = initSoundex(name, firstChar);
+ 
+std::string processSoundex(const std::string& name, char firstChar) {
+   std::string soundex = initializeSoundex(name, firstChar);
     char prevCode = soundex[1];
-    for (size_t i = 2; i < name.length() && soundex.length() < 4; ++i) {
-        char code = encodeChar(name[i]);
-        addCode(soundex, code, prevCode);
+    for (size_t i = 2; i < name.length() && soundex.length() < 4; ++i) 
+    {
+        char code = getSoundexCode(name[i]);
+        appendSoundex(soundex, code, prevCode);
     }
-
+ 
     return soundex;
 }
-
-std::string padSoundex(const std::string& soundex) {
+ 
+std::string paddingSoundex(const std::string& soundex) {
     std::string paddedSoundex = soundex;
     paddedSoundex.resize(4, '0');
+    return paddedSoundex;
+}
+ 
+std::string generateSoundex(const std::string& name) {
+    if (name.empty()) return "";
+ 
+    char firstChar = fetch_firstchar(name);
+    std::string processedName = processSoundex(name, firstChar);
+    std::string paddedSoundex = paddingSoundex(processedName);
+ 
     return paddedSoundex;
 }
